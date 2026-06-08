@@ -15,6 +15,7 @@ export interface Repository {
 
 export interface SearchRepositoriesResponse {
     items: Repository[];
+    total_count: number;
 }
 export interface RepositoryLanguage {
     [key: string]: number;
