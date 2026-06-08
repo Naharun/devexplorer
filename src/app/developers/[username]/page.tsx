@@ -7,16 +7,32 @@ import { useGetUserProfileQuery } from "@/redux/api/githubApi";
 import DeveloperProfileHeader from "@/components/features/developers/DeveloperProfileHeader";
 import DeveloperStats from "@/components/features/developers/DeveloperStats";
 import DeveloperActivity from "@/components/features/developers/DeveloperActivity";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/redux/hooks";
+import { addRecentlyViewed } from "@/redux/slices/recentlyViewedSlice";
 
 interface PageProps {
     params: Promise<{ username: string }>;
 }
 
 export default function DeveloperProfilePage({ params }: PageProps) {
+    const dispatch = useAppDispatch();
+
+
     const { username } = use(params);
 
     const { data: profile, isLoading, isError } = useGetUserProfileQuery(username);
+    useEffect(() => {
+        if (!profile) return;
 
+        dispatch(
+            addRecentlyViewed({
+                id: profile.id,
+                title: profile.login,
+                type: "developer",
+            })
+        );
+    }, [profile, dispatch]);
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">

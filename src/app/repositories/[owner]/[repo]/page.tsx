@@ -3,6 +3,9 @@
 import { use } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/redux/hooks";
+import { addRecentlyViewed } from "@/redux/slices/recentlyViewedSlice";
 import {
     ArrowLeft,
     Star,
@@ -31,13 +34,24 @@ function formatCount(n: number): string {
 }
 
 export default function RepositoryDetailsPage({ params }: PageProps) {
+    const dispatch = useAppDispatch();
     const { owner, repo } = use(params);
 
     const { data: repository, isLoading } = useGetRepositoryDetailsQuery({ owner, repo });
     const { data: languages } = useGetRepositoryLanguagesQuery({ owner, repo });
     const { data: contributors } = useGetContributorsQuery({ owner, repo });
     const { data: readme } = useGetReadmeQuery({ owner, repo });
+    useEffect(() => {
+        if (!repository) return;
 
+        dispatch(
+            addRecentlyViewed({
+                id: repository.id,
+                title: repository.full_name,
+                type: "repository",
+            })
+        );
+    }, [repository, dispatch]);
     const decodedReadme = readme?.content
         ? atob(readme.content.replace(/\n/g, ""))
         : "";

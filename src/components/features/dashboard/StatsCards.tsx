@@ -22,6 +22,10 @@ export default function StatsCards() {
         useAppSelector(
             (state) => state.collections.collections
         );
+    const totalResources =
+        repos.length +
+        developers.length +
+        articles.length;
 
     const cards = [
         {
@@ -40,10 +44,14 @@ export default function StatsCards() {
             title: "Collections",
             value: collections.length,
         },
+        {
+            title: "Total Resources",
+            value: totalResources,
+        }
     ];
 
     return (
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 xl:grid-cols-5 gap-6">
             {cards.map((card) => (
                 <div
                     key={card.title}

@@ -1,23 +1,26 @@
 import CreateCollectionForm from "@/components/features/collections/CreateCollectionForm";
 import CollectionsList from "@/components/features/collections/CollectionsList";
+import ProtectedRoute from "@/components/shared/ProtectedRoute";
 
 export default function CollectionsPage() {
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-3xl font-bold">
-                    Collections
-                </h1>
+        <ProtectedRoute>
+            <div className="space-y-8">
+                <div>
+                    <h1 className="text-3xl font-bold">
+                        Collections
+                    </h1>
 
-                <p className="text-muted-foreground">
-                    Organize repositories,
-                    developers and articles.
-                </p>
+                    <p className="text-muted-foreground">
+                        Organize repositories,
+                        developers and articles.
+                    </p>
+                </div>
+
+                <CreateCollectionForm />
+
+                <CollectionsList />
             </div>
-
-            <CreateCollectionForm />
-
-            <CollectionsList />
-        </div>
+        </ProtectedRoute>
     );
 }

@@ -15,20 +15,51 @@ export default function CollectionsOverview() {
             </h2>
 
             <div className="grid md:grid-cols-3 gap-4">
-                {collections.map((collection) => (
-                    <div
-                        key={collection.id}
-                        className="border rounded-lg p-4"
-                    >
-                        <h3 className="font-semibold">
-                            {collection.name}
-                        </h3>
+                {collections.map((collection) => {
+                    const repos =
+                        collection.items.filter(
+                            (i) => i.type === "repository"
+                        ).length;
 
-                        <p className="text-sm text-muted-foreground">
-                            {collection.items.length} items
-                        </p>
-                    </div>
-                ))}
+                    const developers =
+                        collection.items.filter(
+                            (i) => i.type === "developer"
+                        ).length;
+
+                    const articles =
+                        collection.items.filter(
+                            (i) => i.type === "article"
+                        ).length;
+
+                    return (
+                        <div
+                            key={collection.id}
+                            className="border rounded-lg p-4"
+                        >
+                            <h3 className="font-semibold">
+                                {collection.name}
+                            </h3>
+
+                            <p className="text-sm text-muted-foreground mb-3">
+                                {collection.items.length} items
+                            </p>
+
+                            <div className="flex flex-wrap gap-2 text-xs">
+                                <span className="px-2 py-1 rounded bg-blue-100">
+                                    Repo: {repos}
+                                </span>
+
+                                <span className="px-2 py-1 rounded bg-green-100">
+                                    Dev: {developers}
+                                </span>
+
+                                <span className="px-2 py-1 rounded bg-purple-100">
+                                    Article: {articles}
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
