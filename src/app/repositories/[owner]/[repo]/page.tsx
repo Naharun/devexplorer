@@ -22,7 +22,7 @@ import {
     useGetReadmeQuery,
 } from "@/redux/api/githubApi";
 import ReactMarkdown from "react-markdown";
-import LanguageChart from "../../LanguageChart";
+import LanguageChart from "../../../../components/features/repositories/LanguageChart";
 
 interface PageProps {
     params: Promise<{ owner: string; repo: string }>;

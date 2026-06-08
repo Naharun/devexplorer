@@ -2,25 +2,25 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
 import AuthProvider from "@/providers/AuthProvider";
-import { Toaster } from "sonner";
+import Navbar from "@/components/layout/Navbar";
 
 export const metadata: Metadata = {
-  title: "DevExplorer",
-  description: "Developer Intelligence Platform",
+  title: "DevExplorer — Developer Intelligence Platform",
+  description: "Search and discover GitHub repos, developers, articles, news and Stack Overflow questions.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>
         <ReduxProvider>
           <AuthProvider>
-            <Toaster richColors position="top-right" />
-            {children}
+            <Navbar />
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+              {children}
+            </div>
           </AuthProvider>
         </ReduxProvider>
       </body>
