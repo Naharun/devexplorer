@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
 import AuthProvider from "@/providers/AuthProvider";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "DevExplorer",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <ReduxProvider>
           <AuthProvider>
+            <Toaster richColors position="top-right" />
             {children}
           </AuthProvider>
         </ReduxProvider>

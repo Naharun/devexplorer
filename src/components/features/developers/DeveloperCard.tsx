@@ -2,15 +2,18 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, FolderPlus } from "lucide-react";
 import { GitHubUser } from "@/types/developer";
 import SaveDeveloperButton from "@/components/shared/SaveDeveloperButton";
+import { useState } from "react";
+import AddToCollectionModal from "@/components/features/collections/AddToCollectionModal";
 
 interface Props {
     user: GitHubUser;
 }
 
 export default function DeveloperCard({ user }: Props) {
+    const [openModal, setOpenModal] = useState(false);
     return (
         <div className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                         rounded-xl p-5 hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-600
@@ -47,6 +50,12 @@ export default function DeveloperCard({ user }: Props) {
                             type: user.type,
                         }}
                     />
+                    <button
+                        onClick={() => setOpenModal(true)}
+                        className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                    >
+                        <FolderPlus size={16} />
+                    </button>
                     <a
                         href={`https://github.com/${user.login}`}
                         target="_blank"
@@ -57,6 +66,15 @@ export default function DeveloperCard({ user }: Props) {
                     </a>
                 </div>
             </div>
+            <AddToCollectionModal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                item={{
+                    id: user.id.toString(),
+                    type: "developer",
+                    title: user.login,
+                }}
+            />
         </div>
     );
 }

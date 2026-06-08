@@ -4,6 +4,9 @@ import Image from "next/image";
 import { Clock, Heart, MessageCircle } from "lucide-react";
 import { Article } from "@/types/devto";
 import SaveArticleButton from "@/components/shared/SaveArticleButton";
+import { FolderPlus } from "lucide-react";
+import { useState } from "react";
+import AddToCollectionModal from "@/components/features/collections/AddToCollectionModal";
 
 interface Props {
     article: Article;
@@ -17,6 +20,8 @@ function timeAgo(dateStr: string): string {
 }
 
 export default function ArticleCard({ article }: Props) {
+    const [openModal, setOpenModal] = useState(false);
+
     return (
         <div className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                        rounded-xl overflow-hidden hover:shadow-lg hover:border-blue-300
@@ -92,9 +97,24 @@ export default function ArticleCard({ article }: Props) {
                                 tag_list: article.tag_list,
                             }}
                         />
+                        <button
+                            onClick={() => setOpenModal(true)}
+                            className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                        >
+                            <FolderPlus size={16} />
+                        </button>
                     </div>
                 </div>
             </div>
+            <AddToCollectionModal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                item={{
+                    id: article.id.toString(),
+                    type: "article",
+                    title: article.title,
+                }}
+            />
         </div>
     );
 }

@@ -5,6 +5,9 @@ import Image from "next/image";
 import { Star, GitFork, Circle } from "lucide-react";
 import { Repository } from "@/types/github";
 import SaveRepositoryButton from "@/components/shared/SaveRepositoryButton";
+import { useState } from "react";
+import AddToCollectionModal from "@/components/features/collections/AddToCollectionModal";
+import { FolderPlus } from "lucide-react";
 
 const LANGUAGE_COLORS: Record<string, string> = {
     TypeScript: "#3178c6", JavaScript: "#f1e05a", Python: "#3572A5",
@@ -23,6 +26,7 @@ interface Props {
 }
 
 export default function RepositoryCard({ repository }: Props) {
+    const [openModal, setOpenModal] = useState(false);
     const langColor = repository.language
         ? LANGUAGE_COLORS[repository.language] ?? "#8b949e"
         : null;
@@ -63,6 +67,12 @@ export default function RepositoryCard({ repository }: Props) {
                         owner: repository.owner,
                     }}
                 />
+                <button
+                    onClick={() => setOpenModal(true)}
+                    className="flex items-center gap-2 rounded-lg border px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                >
+                    <FolderPlus size={16} />
+                </button>
             </div>
 
             {/* Description */}
@@ -89,6 +99,17 @@ export default function RepositoryCard({ repository }: Props) {
                     {formatCount(repository.forks_count)}
                 </span>
             </div>
+            <AddToCollectionModal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                item={{
+                    id: repository.id.toString(),
+                    type: "repository",
+                    title: repository.name,
+                }}
+            />
         </div>
+
     );
+
 }
