@@ -1,47 +1,115 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface FavoritesState {
-    repositories: string[];
+export interface FavoriteRepository {
+    id: number;
+    name: string;
+    full_name: string;
+    description: string | null;
+    stargazers_count: number;
+    forks_count: number;
+    language: string | null;
+    owner: {
+        login: string;
+        avatar_url: string;
+    };
 }
 
-const initialState: FavoritesState =
-{
-    repositories: [],
-};
+export interface FavoriteDeveloper {
+    id: number;
+    login: string;
+    avatar_url: string;
+    type: string;
+}
 
-const favoritesSlice =
-    createSlice({
-        name: "favorites",
+export interface FavoriteArticle {
+    id: number;
+    title: string;
+    url: string;
+    cover_image: string | null;
+    reading_time_minutes: number;
+    positive_reactions_count: number;
+    user: {
+        name: string;
+        profile_image: string;
+    };
+    tag_list: string[];
+}
 
-        initialState,
+interface FavoritesState {
+    repositories: FavoriteRepository[];
+    developers: FavoriteDeveloper[];
+    articles: FavoriteArticle[];
+}
 
-        reducers: {
-            addFavorite: (
-                state,
-                action
-            ) => {
-                state.repositories.push(
-                    action.payload
-                );
-            },
+function loadFromStorage(): FavoritesState {
+    if (typeof window === "undefined") {
+        return { repositories: [], developers: [], articles: [] };
+    }
+    try {
+        const saved = localStorage.getItem("devexplorer_favorites");
+        return saved ? JSON.parse(saved) : { repositories: [], developers: [], articles: [] };
+    } catch {
+        return { repositories: [], developers: [], articles: [] };
+    }
+}
 
-            removeFavorite: (
-                state,
-                action
-            ) => {
-                state.repositories =
-                    state.repositories.filter(
-                        (id) =>
-                            id !==
-                            action.payload
-                    );
-            },
+function saveToStorage(state: FavoritesState) {
+    if (typeof window === "undefined") return;
+    try {
+        localStorage.setItem("devexplorer_favorites", JSON.stringify(state));
+    } catch {
+        // ignore
+    }
+}
+
+const favoritesSlice = createSlice({
+    name: "favorites",
+    initialState: loadFromStorage,
+    reducers: {
+        addRepository: (state, action: PayloadAction<FavoriteRepository>) => {
+            if (!state.repositories.find((r) => r.id === action.payload.id)) {
+                state.repositories.push(action.payload);
+                saveToStorage(state);
+            }
         },
-    });
+        removeRepository: (state, action: PayloadAction<number>) => {
+            state.repositories = state.repositories.filter((r) => r.id !== action.payload);
+            saveToStorage(state);
+        },
+        addDeveloper: (state, action: PayloadAction<FavoriteDeveloper>) => {
+            if (!state.developers.find((d) => d.id === action.payload.id)) {
+                state.developers.push(action.payload);
+                saveToStorage(state);
+            }
+        },
+        removeDeveloper: (state, action: PayloadAction<number>) => {
+            state.developers = state.developers.filter((d) => d.id !== action.payload);
+            saveToStorage(state);
+        },
+        addArticle: (state, action: PayloadAction<FavoriteArticle>) => {
+            if (!state.articles.find((a) => a.id === action.payload.id)) {
+                state.articles.push(action.payload);
+                saveToStorage(state);
+            }
+        },
+        removeArticle: (state, action: PayloadAction<number>) => {
+            state.articles = state.articles.filter((a) => a.id !== action.payload);
+            saveToStorage(state);
+        },
+        clearAll: (state) => {
+            state.repositories = [];
+            state.developers = [];
+            state.articles = [];
+            saveToStorage(state);
+        },
+    },
+});
 
 export const {
-    addFavorite,
-    removeFavorite,
+    addRepository, removeRepository,
+    addDeveloper, removeDeveloper,
+    addArticle, removeArticle,
+    clearAll,
 } = favoritesSlice.actions;
 
 export default favoritesSlice.reducer;

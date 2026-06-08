@@ -3,6 +3,7 @@ import { githubApi } from "./api/githubApi";
 import { devtoApi } from "./api/devtoApi";
 import { hackerNewsApi } from "./api/hackerNewsApi";
 import { stackExchangeApi } from "./api/stackExchangeApi";
+import favoritesReducer from "./slices/favoritesSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         [devtoApi.reducerPath]: devtoApi.reducer,
         [hackerNewsApi.reducerPath]: hackerNewsApi.reducer,
         [stackExchangeApi.reducerPath]: stackExchangeApi.reducer,
+        favorites: favoritesReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
