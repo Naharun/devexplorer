@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Contributor, RepositoryLanguage, SearchRepositoriesResponse } from "@/types/github";
+import { SearchUsersResponse, UserProfile } from "@/types/developer";
 
 export const githubApi = createApi({
     reducerPath: "githubApi",
@@ -58,6 +59,29 @@ export const githubApi = createApi({
             query: ({ owner, repo }) =>
                 `/repos/${owner}/${repo}/readme`,
         }),
+        searchUsers: builder.query<
+            SearchUsersResponse,
+            string
+        >({
+            query: (username) =>
+                `/search/users?q=${username}&per_page=20`,
+        }),
+
+        getUserProfile: builder.query<
+            UserProfile,
+            string
+        >({
+            query: (username) =>
+                `/users/${username}`,
+        }),
+
+        getUserEvents: builder.query<
+            unknown[],
+            string
+        >({
+            query: (username) =>
+                `/users/${username}/events`,
+        }),
     }),
 
 });
@@ -68,4 +92,7 @@ export const {
     useGetRepositoryLanguagesQuery,
     useGetContributorsQuery,
     useGetReadmeQuery,
+    useSearchUsersQuery,
+    useGetUserProfileQuery,
+    useGetUserEventsQuery,
 } = githubApi;

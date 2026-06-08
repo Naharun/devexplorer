@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
+import "./globals.css";
 import ReduxProvider from "@/providers/ReduxProvider";
+
+export const metadata: Metadata = {
+  title: "DevExplorer",
+  description: "Developer Intelligence Platform",
+};
 
 export default function RootLayout({
   children,
