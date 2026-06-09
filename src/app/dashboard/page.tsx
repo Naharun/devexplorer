@@ -6,31 +6,23 @@ import SavedRepositories from "@/components/features/dashboard/SavedRepositories
 import SavedDevelopers from "@/components/features/dashboard/SavedDevelopers";
 import SavedArticles from "@/components/features/dashboard/SavedArticles";
 import CollectionsOverview from "@/components/features/dashboard/CollectionsOverview";
-import RecentlyViewed from "@/components/features/dashboard/RecentlyViewed";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 
 export default function DashboardPage() {
     return (
         <ProtectedRoute>
-            <div className="space-y-8">
+            <main className="max-w-7xl mx-auto px-4 py-10 space-y-8">
                 <DashboardHeader />
-
                 <UserProfileCard />
-
                 <StatsCards />
-                <RecentlyViewed />
-
                 <ActivityChart />
-
                 <div className="grid gap-6 lg:grid-cols-2">
                     <SavedRepositories />
                     <SavedDevelopers />
                 </div>
-
                 <SavedArticles />
-
                 <CollectionsOverview />
-            </div>
+            </main>
         </ProtectedRoute>
     );
 }
