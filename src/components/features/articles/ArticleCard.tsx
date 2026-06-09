@@ -113,6 +113,7 @@ export default function ArticleCard({ article }: Props) {
                     id: article.id.toString(),
                     type: "article",
                     title: article.title,
+                    slug: article.url,
                 }}
             />
         </div>

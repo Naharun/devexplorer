@@ -73,6 +73,7 @@ export default function DeveloperCard({ user }: Props) {
                     id: user.id.toString(),
                     type: "developer",
                     title: user.login,
+                    slug: user.login,
                 }}
             />
         </div>

@@ -7,6 +7,7 @@ export interface CollectionItem {
     id: string;
     type: CollectionItemType;
     title: string;
+    slug?: string;
 }
 
 export interface Collection {

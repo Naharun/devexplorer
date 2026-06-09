@@ -106,6 +106,7 @@ export default function RepositoryCard({ repository }: Props) {
                     id: repository.id.toString(),
                     type: "repository",
                     title: repository.name,
+                    slug: `${repository.owner.login}/${repository.name}`
                 }}
             />
         </div>

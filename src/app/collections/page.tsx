@@ -5,22 +5,20 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 export default function CollectionsPage() {
     return (
         <ProtectedRoute>
-            <div className="space-y-8">
-                <div>
-                    <h1 className="text-3xl font-bold">
+            <main className="max-w-6xl mx-auto px-4 py-10">
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                         Collections
                     </h1>
-
-                    <p className="text-muted-foreground">
-                        Organize repositories,
-                        developers and articles.
+                    <p className="text-gray-500 dark:text-gray-400">
+                        Organize repositories, developers and articles into groups.
                     </p>
                 </div>
-
-                <CreateCollectionForm />
-
+                <div className="mb-8">
+                    <CreateCollectionForm />
+                </div>
                 <CollectionsList />
-            </div>
+            </main>
         </ProtectedRoute>
     );
 }
