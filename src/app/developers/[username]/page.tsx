@@ -1,38 +1,34 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useGetUserProfileQuery } from "@/redux/api/githubApi";
+import { useAppDispatch } from "@/redux/hooks";
+import { addRecentlyViewed } from "@/redux/slices/recentlyViewedSlice";
 import DeveloperProfileHeader from "@/components/features/developers/DeveloperProfileHeader";
 import DeveloperStats from "@/components/features/developers/DeveloperStats";
 import DeveloperActivity from "@/components/features/developers/DeveloperActivity";
-import { useEffect } from "react";
-import { useAppDispatch } from "@/redux/hooks";
-import { addRecentlyViewed } from "@/redux/slices/recentlyViewedSlice";
 
 interface PageProps {
     params: Promise<{ username: string }>;
 }
 
 export default function DeveloperProfilePage({ params }: PageProps) {
-    const dispatch = useAppDispatch();
-
-
     const { username } = use(params);
-
+    const dispatch = useAppDispatch();
     const { data: profile, isLoading, isError } = useGetUserProfileQuery(username);
-    useEffect(() => {
-        if (!profile) return;
 
-        dispatch(
-            addRecentlyViewed({
+    useEffect(() => {
+        if (profile) {
+            dispatch(addRecentlyViewed({
                 id: profile.id,
                 title: profile.login,
                 type: "developer",
-            })
-        );
+            }));
+        }
     }, [profile, dispatch]);
+
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
@@ -47,15 +43,9 @@ export default function DeveloperProfilePage({ params }: PageProps) {
                 <p className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                     User not found
                 </p>
-                <p className="text-gray-500 mb-6">
-                    &quot;{username}&quot; does not exist on GitHub.
-                </p>
-                <Link
-                    href="/developers"
-                    className="inline-flex items-center gap-2 text-blue-500 hover:underline"
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    Back to Developers
+                <p className="text-gray-500 mb-6">&quot;{username}&quot; does not exist on GitHub.</p>
+                <Link href="/developers" className="inline-flex items-center gap-2 text-blue-500 hover:underline">
+                    <ArrowLeft className="w-4 h-4" /> Back to Developers
                 </Link>
             </div>
         );
@@ -63,22 +53,12 @@ export default function DeveloperProfilePage({ params }: PageProps) {
 
     return (
         <main className="max-w-4xl mx-auto px-4 py-10 space-y-6">
-            {/* Back */}
-            <Link
-                href="/developers"
-                className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-500 transition-colors"
-            >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Developers
+            <Link href="/developers"
+                className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-500 transition-colors">
+                <ArrowLeft className="w-4 h-4" /> Back to Developers
             </Link>
-
-            {/* Profile Header */}
             <DeveloperProfileHeader profile={profile} />
-
-            {/* Stats */}
             <DeveloperStats profile={profile} />
-
-            {/* Activity */}
             <DeveloperActivity username={username} />
         </main>
     );

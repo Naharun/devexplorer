@@ -6,23 +6,19 @@ import ProtectedRoute from "@/components/shared/ProtectedRoute";
 export default function FavoritesPage() {
     return (
         <ProtectedRoute>
-            <div className="space-y-8">
+            <main className="max-w-6xl mx-auto px-4 py-10 space-y-8">
                 <div>
-                    <h1 className="text-3xl font-bold">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
                         Favorites
                     </h1>
-
-                    <p className="text-muted-foreground">
+                    <p className="text-gray-500 dark:text-gray-400">
                         All your saved resources.
                     </p>
                 </div>
-
                 <SavedRepositories />
-
                 <SavedDevelopers />
-
                 <SavedArticles />
-            </div>
+            </main>
         </ProtectedRoute>
     );
 }

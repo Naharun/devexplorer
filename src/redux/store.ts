@@ -7,17 +7,19 @@ import favoritesReducer from "./slices/favoritesSlice";
 import authReducer from "./slices/authSlice";
 import collectionsReducer from "./slices/collectionsSlice";
 import recentlyViewedReducer from "./slices/recentlyViewedSlice";
+import themeReducer from "./slices/themeSlice";
 
 export const store = configureStore({
     reducer: {
-        auth: authReducer,
-        collections: collectionsReducer,
-        recentlyViewed: recentlyViewedReducer,
         [githubApi.reducerPath]: githubApi.reducer,
         [devtoApi.reducerPath]: devtoApi.reducer,
         [hackerNewsApi.reducerPath]: hackerNewsApi.reducer,
         [stackExchangeApi.reducerPath]: stackExchangeApi.reducer,
         favorites: favoritesReducer,
+        auth: authReducer,
+        collections: collectionsReducer,
+        recentlyViewed: recentlyViewedReducer,
+        theme: themeReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()

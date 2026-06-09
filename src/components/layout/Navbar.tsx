@@ -6,13 +6,13 @@ import { useState } from "react";
 import {
     BookOpen, Newspaper, HelpCircle,
     LayoutDashboard, Bookmark, Menu, X, Code2,
-    LogOut, User, FolderOpen,
-    GitBranch,
+    LogOut, User, FolderOpen, GitBranch,
 } from "lucide-react";
 import { useAppSelector } from "@/redux/hooks";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 
 const NAV_LINKS = [
     { href: "/repositories", label: "Repositories", icon: GitBranch },
@@ -49,15 +49,12 @@ export default function Navbar() {
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-1">
                     {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-                        <Link
-                            key={href}
-                            href={href}
+                        <Link key={href} href={href}
                             className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all
                                 ${pathname.startsWith(href)
                                     ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                                     : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                }`}
-                        >
+                                }`}>
                             <Icon className="w-4 h-4" />
                             {label}
                         </Link>
@@ -65,46 +62,37 @@ export default function Navbar() {
                 </div>
 
                 {/* Right side */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                    <ThemeToggle />
+
                     {user ? (
                         <>
-                            <Link
-                                href="/dashboard"
+                            <Link href="/dashboard"
                                 className={`hidden md:flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all
                                     ${pathname === "/dashboard"
                                         ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                                         : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`}
-                            >
+                                    }`}>
                                 <LayoutDashboard className="w-4 h-4" />
                                 Dashboard
                             </Link>
-                            <Link
-                                href="/collections"
+                            <Link href="/collections"
                                 className={`hidden md:flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all
                                     ${pathname === "/collections"
                                         ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                                         : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                    }`}
-                            >
+                                    }`}>
                                 <FolderOpen className="w-4 h-4" />
                                 Collections
                             </Link>
 
                             {/* User menu */}
                             <div className="relative">
-                                <button
-                                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                                    className="flex items-center gap-2 p-1 rounded-full hover:ring-2 ring-blue-300 transition-all"
-                                >
+                                <button onClick={() => setUserMenuOpen(!userMenuOpen)}
+                                    className="flex items-center gap-2 p-1 rounded-full hover:ring-2 ring-blue-300 transition-all ml-1">
                                     {user.photoURL ? (
-                                        <Image
-                                            src={user.photoURL}
-                                            alt={user.displayName ?? "User"}
-                                            width={32}
-                                            height={32}
-                                            className="rounded-full"
-                                        />
+                                        <Image src={user.photoURL} alt={user.displayName ?? "User"}
+                                            width={32} height={32} className="rounded-full" />
                                     ) : (
                                         <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold">
                                             {user.displayName?.[0] ?? user.email?.[0] ?? "U"}
@@ -121,61 +109,38 @@ export default function Navbar() {
                                             </p>
                                             <p className="text-xs text-gray-500 truncate">{user.email}</p>
                                         </div>
-                                        <Link
-                                            href="/dashboard"
-                                            onClick={() => setUserMenuOpen(false)}
-                                            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300
-                                                       hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                                        >
-                                            <LayoutDashboard className="w-4 h-4" />
-                                            Dashboard
+                                        <Link href="/dashboard" onClick={() => setUserMenuOpen(false)}
+                                            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                            <LayoutDashboard className="w-4 h-4" /> Dashboard
                                         </Link>
-                                        <Link
-                                            href="/favorites"
-                                            onClick={() => setUserMenuOpen(false)}
-                                            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300
-                                                       hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                                        >
-                                            <Bookmark className="w-4 h-4" />
-                                            Favorites
+                                        <Link href="/favorites" onClick={() => setUserMenuOpen(false)}
+                                            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                            <Bookmark className="w-4 h-4" /> Favorites
                                         </Link>
-                                        <button
-                                            onClick={handleSignOut}
-                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-500
-                                                       hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
-                                        >
-                                            <LogOut className="w-4 h-4" />
-                                            Sign Out
+                                        <button onClick={handleSignOut}
+                                            className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                            <LogOut className="w-4 h-4" /> Sign Out
                                         </button>
                                     </div>
                                 )}
                             </div>
                         </>
                     ) : (
-                        <div className="hidden md:flex items-center gap-2">
-                            <Link
-                                href="/login"
-                                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300
-                                           hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                            >
+                        <div className="hidden md:flex items-center gap-2 ml-1">
+                            <Link href="/login"
+                                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                                 Sign In
                             </Link>
-                            <Link
-                                href="/signup"
-                                className="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700
-                                           text-white rounded-lg transition-colors"
-                            >
+                            <Link href="/signup"
+                                className="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
                                 Sign Up
                             </Link>
                         </div>
                     )}
 
                     {/* Mobile menu button */}
-                    <button
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300
-                                   hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                    >
+                    <button onClick={() => setMobileOpen(!mobileOpen)}
+                        className="md:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
                 </div>
@@ -185,18 +150,13 @@ export default function Navbar() {
             {mobileOpen && (
                 <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 space-y-1">
                     {NAV_LINKS.map(({ href, label, icon: Icon }) => (
-                        <Link
-                            key={href}
-                            href={href}
-                            onClick={() => setMobileOpen(false)}
+                        <Link key={href} href={href} onClick={() => setMobileOpen(false)}
                             className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
                                 ${pathname.startsWith(href)
                                     ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
                                     : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-                                }`}
-                        >
-                            <Icon className="w-4 h-4" />
-                            {label}
+                                }`}>
+                            <Icon className="w-4 h-4" />{label}
                         </Link>
                     ))}
                     {user ? (
@@ -204,6 +164,10 @@ export default function Navbar() {
                             <Link href="/dashboard" onClick={() => setMobileOpen(false)}
                                 className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                 <LayoutDashboard className="w-4 h-4" /> Dashboard
+                            </Link>
+                            <Link href="/favorites" onClick={() => setMobileOpen(false)}
+                                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                <Bookmark className="w-4 h-4" /> Favorites
                             </Link>
                             <button onClick={handleSignOut}
                                 className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
@@ -217,7 +181,7 @@ export default function Navbar() {
                                 <User className="w-4 h-4" /> Sign In
                             </Link>
                             <Link href="/signup" onClick={() => setMobileOpen(false)}
-                                className="flex items-center gap-2 px-3 py-2.5  text-sm font-medium bg-blue-600 text-white rounded-lg">
+                                className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium bg-blue-600 text-white">
                                 Sign Up
                             </Link>
                         </>

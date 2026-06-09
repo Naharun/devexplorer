@@ -6,6 +6,7 @@ import SavedRepositories from "@/components/features/dashboard/SavedRepositories
 import SavedDevelopers from "@/components/features/dashboard/SavedDevelopers";
 import SavedArticles from "@/components/features/dashboard/SavedArticles";
 import CollectionsOverview from "@/components/features/dashboard/CollectionsOverview";
+import RecentlyViewed from "@/components/features/dashboard/RecentlyViewed";
 import ProtectedRoute from "@/components/shared/ProtectedRoute";
 
 export default function DashboardPage() {
@@ -15,6 +16,7 @@ export default function DashboardPage() {
                 <DashboardHeader />
                 <UserProfileCard />
                 <StatsCards />
+                <RecentlyViewed />
                 <ActivityChart />
                 <div className="grid gap-6 lg:grid-cols-2">
                     <SavedRepositories />

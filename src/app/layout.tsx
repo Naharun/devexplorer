@@ -4,6 +4,7 @@ import ReduxProvider from "@/providers/ReduxProvider";
 import AuthProvider from "@/providers/AuthProvider";
 import Navbar from "@/components/layout/Navbar";
 import { Toaster } from "sonner";
+import ThemeProvider from "@/providers/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "DevExplorer — Developer Intelligence Platform",
@@ -17,13 +18,15 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ReduxProvider>
-          <AuthProvider>
-            <Navbar />
-            <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-              {children}
-            </div>
-            <Toaster position="bottom-right" richColors />
-          </AuthProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <Navbar />
+              <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+                {children}
+              </div>
+              <Toaster position="bottom-right" richColors />
+            </AuthProvider>
+          </ThemeProvider>
         </ReduxProvider>
       </body>
     </html>
